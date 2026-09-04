@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type SVGProps } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   OutfitSuggestionCard,
   type OutfitSuggestion,
@@ -6,24 +7,6 @@ import {
 
 /**
  * Tela de conversa com a assistente Vintex (mock visual, Figma frame do chat).
- *
- * Responsiva: usa os breakpoints do projeto (`tablet:` 720px, `web:` 1050px).
- * Mobile e tablet herdam exatamente o layout original (coluna estreita
- * centralizada). A partir de `web:`, o cabeçalho e a linha divisória acima
- * das mensagens passam a ocupar a largura inteira da tela — como uma barra
- * de topo de verdade — enquanto as mensagens e o input continuam num bloco
- * central mais estreito (`max-w-4xl`).
- *
- * Estático por enquanto: as mensagens em `INITIAL_MESSAGES` simulam uma troca
- * já em andamento, e as imagens das peças são placeholders (ícones de
- * categoria) até existir um serviço/CDN real para o catálogo. Usa só os
- * tokens de `src/styles/tokens.ts` via classes Tailwind (`bg-papel`,
- * `text-h2`, …) — nenhuma cor ou tamanho de fonte é escrito à mão aqui.
- *
- * Uso: ainda sem rota própria (FE-FND-1c, #106); renderizar direto onde
- * fizer sentido para teste, ex.:
- *   import VintexAI from '@/pages/VintexAI/VintexAI';
- *   <VintexAI />
  */
 
 type ChatRole = 'user' | 'vintex';
@@ -36,15 +19,9 @@ interface ChatMessage {
   outfit?: OutfitSuggestion;
 }
 
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: 'm1',
-    role: 'user',
-    timestamp: 'agora',
-    text: 'Quero um look para um café no domingo, com cara vintage mas sem parecer fantasia.',
-  },
-  {
-    id: 'm2',
+function createMockVintexReply(): ChatMessage {
+  return {
+    id: crypto.randomUUID(),
     role: 'vintex',
     timestamp: 'agora',
     text: 'Entendi: confortável, com memória de brechó e uma base fácil de usar. Montei uma primeira combinação com contraste baixo e uma textura para dar personalidade.',
@@ -58,7 +35,17 @@ const INITIAL_MESSAGES: ChatMessage[] = [
       ],
       note: 'Conteúdo sintético para visualizar a ideia. A curadoria real poderá cruzar suas preferências com peças disponíveis.',
     },
+  };
+}
+
+const INITIAL_MESSAGES: ChatMessage[] = [
+  {
+    id: 'm1',
+    role: 'user',
+    timestamp: 'agora',
+    text: 'Quero um look para um café no domingo, com cara vintage mas sem parecer fantasia.',
   },
+  createMockVintexReply(),
 ];
 
 const SUGGESTION_CHIPS = ['Look para um jantar', 'Cores mais neutras', 'Até R$ 250'];
@@ -164,7 +151,22 @@ function VintexBubble({ message }: { message: ChatMessage }) {
 }
 
 export default function VintexAI() {
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const location = useLocation();
+  const incomingMessage = (location.state as { message?: string } | null)?.message;
+
+  const [messages, setMessages] = useState<ChatMessage[]>(() =>
+    incomingMessage
+      ? [
+          {
+            id: crypto.randomUUID(),
+            role: 'user',
+            timestamp: 'agora',
+            text: incomingMessage,
+          },
+          createMockVintexReply(),
+        ]
+      : INITIAL_MESSAGES,
+  );
   const [draft, setDraft] = useState('');
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -218,7 +220,7 @@ export default function VintexAI() {
               key={message.id}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className="w-full max-w-[85%] tablet:max-w-[70%] web:max-w-[65%]">
+              <div className="w-full tablet:max-w-[70%] web:max-w-[65%]">
                 {message.role === 'user' ? (
                   <UserBubble message={message} />
                 ) : (

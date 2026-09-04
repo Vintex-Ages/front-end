@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type SVGProps } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface VintexSearchSpotlightProps {
   eyebrow?: string;
@@ -8,6 +9,9 @@ interface VintexSearchSpotlightProps {
   onlineLabel?: string;
   isOnline?: boolean;
   onSubmit?: (query: string) => void;
+  maxWidth?: string;
+  minHeight?: string;
+  redirectTo?: string;
 }
 
 function SendIcon(props: SVGProps<SVGSVGElement>) {
@@ -38,8 +42,12 @@ export function VintexSearchSpotlight({
   onlineLabel = 'Online',
   isOnline = true,
   onSubmit,
+  maxWidth = '820px',
+  minHeight = '500px',
+  redirectTo = '/vintex',
 }: VintexSearchSpotlightProps) {
   const [query, setQuery] = useState('');
+  const navigate = useNavigate();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,6 +55,7 @@ export function VintexSearchSpotlight({
     if (!trimmed) return;
     onSubmit?.(trimmed);
     setQuery('');
+    navigate(redirectTo, { state: { message: trimmed } });
   }
 
   function handleSuggestionClick(suggestion: string) {
@@ -54,8 +63,8 @@ export function VintexSearchSpotlight({
   }
 
   return (
-    <div className="w-full max-w-[820px] rounded-none bg-vermelho-escuro p-3">
-      <div className="flex min-h-[500px] flex-col border border-vermelho-contorno p-8">
+    <div className="w-full rounded-none bg-vermelho-escuro p-3" style={{ maxWidth }}>
+      <div className="flex flex-col border border-vermelho-contorno p-8" style={{ minHeight }}>
         <div className="flex items-center justify-between gap-4">
           <p className="text-label font-semibold uppercase tracking-wide text-branco-quente/80">
             {eyebrow}
