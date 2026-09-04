@@ -5,4 +5,3 @@ export {
   type OutfitItemIcon,
   type OutfitSuggestion,
 } from './OutfitSuggestionCard';
- 

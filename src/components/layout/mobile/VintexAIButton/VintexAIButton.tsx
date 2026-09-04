@@ -1,7 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react';
 
-interface VintexAIButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+interface VintexAIButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** Texto lido por leitores de tela. */
   label?: string;
 }

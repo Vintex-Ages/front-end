@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent, type SVGProps } from 'react';
-import { OutfitSuggestionCard, type OutfitSuggestion} from '@/components/layout/VintexAITool/OutfitSuggestionCard';
+import {
+  OutfitSuggestionCard,
+  type OutfitSuggestion,
+} from '@/components/layout/VintexAITool/OutfitSuggestionCard';
 
 /**
  * Tela de conversa com AI Vintex (mock visual, Figma frame do chat).

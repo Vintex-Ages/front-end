@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type SVGProps } from 'react';
- 
+
 interface VintexSearchSpotlightProps {
   eyebrow?: string;
   heading?: string;
@@ -9,7 +9,7 @@ interface VintexSearchSpotlightProps {
   isOnline?: boolean;
   onSubmit?: (query: string) => void;
 }
- 
+
 function SendIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -29,7 +29,7 @@ function SendIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 export function VintexSearchSpotlight({
   eyebrow = 'IA calibrada • Vintage 90s + Alfaiataria',
   heading = 'O que você procura hoje no RS?',
@@ -40,7 +40,7 @@ export function VintexSearchSpotlight({
   onSubmit,
 }: VintexSearchSpotlightProps) {
   const [query, setQuery] = useState('');
- 
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const trimmed = query.trim();
@@ -48,11 +48,11 @@ export function VintexSearchSpotlight({
     onSubmit?.(trimmed);
     setQuery('');
   }
- 
+
   function handleSuggestionClick(suggestion: string) {
     setQuery(suggestion);
   }
- 
+
   return (
     <div className="w-full max-w-[820px] rounded-none bg-vermelho-escuro p-3">
       <div className="flex min-h-[500px] flex-col border border-vermelho-contorno p-8">
@@ -67,11 +67,11 @@ export function VintexSearchSpotlight({
             </p>
           ) : null}
         </div>
- 
+
         <h2 className="mt-6 font-display text-h2 font-semibold leading-tight text-branco-quente">
           {heading}
         </h2>
- 
+
         <form
           onSubmit={handleSubmit}
           className="mt-8 flex items-stretch border border-linha bg-branco-quente"
@@ -91,7 +91,7 @@ export function VintexSearchSpotlight({
             <SendIcon className="h-5 w-5" />
           </button>
         </form>
- 
+
         {suggestions.length > 0 ? (
           <div className="mt-4 flex flex-wrap gap-3">
             {suggestions.map((suggestion) => (
@@ -110,5 +110,5 @@ export function VintexSearchSpotlight({
     </div>
   );
 }
- 
+
 export default VintexSearchSpotlight;
