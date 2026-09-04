@@ -1,26 +1,26 @@
 import type { SVGProps } from 'react';
- 
+
 export type OutfitItemIcon = 'shirt' | 'pants' | 'bag';
- 
+
 export interface OutfitItem {
   id: string;
   label: string;
   icon: OutfitItemIcon;
 }
- 
+
 export interface OutfitSuggestion {
   title: string;
   description: string;
   items: OutfitItem[];
   note: string;
 }
- 
+
 interface OutfitSuggestionCardProps {
   suggestion: OutfitSuggestion;
   onSaveDraft?: () => void;
   onViewItems?: () => void;
 }
- 
+
 function ShirtIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -36,7 +36,7 @@ function ShirtIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 function PantsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -52,7 +52,7 @@ function PantsIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 function BagIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -69,13 +69,13 @@ function BagIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 const ITEM_ICONS: Record<OutfitItemIcon, (props: SVGProps<SVGSVGElement>) => JSX.Element> = {
   shirt: ShirtIcon,
   pants: PantsIcon,
   bag: BagIcon,
 };
- 
+
 export function OutfitSuggestionCard({
   suggestion,
   onSaveDraft,
@@ -85,7 +85,7 @@ export function OutfitSuggestionCard({
     <div className="mt-4 rounded-none border border-linha bg-branco-quente p-4 shadow-[0_8px_20px_-6px_#9E8E7C]">
       <p className="font-display text-body font-semibold text-tinta">{suggestion.title}</p>
       <p className="mt-1 text-body text-texto-auxiliar">{suggestion.description}</p>
- 
+
       <div className="mt-4 grid grid-cols-3 gap-3">
         {suggestion.items.map((item) => {
           const Icon = ITEM_ICONS[item.icon];
@@ -99,9 +99,9 @@ export function OutfitSuggestionCard({
           );
         })}
       </div>
- 
+
       <p className="mt-4 text-body text-texto-auxiliar">{suggestion.note}</p>
- 
+
       <div className="mt-4 flex gap-2">
         <button
           type="button"
@@ -121,6 +121,5 @@ export function OutfitSuggestionCard({
     </div>
   );
 }
- 
+
 export default OutfitSuggestionCard;
- 

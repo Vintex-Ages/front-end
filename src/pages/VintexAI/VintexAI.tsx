@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type SVGProps } from 'react';
-import {
-  OutfitSuggestionCard,
-  type OutfitSuggestion,
-} from '@/components/layout/VintexAITool/OutfitSuggestionCard';
+import { OutfitSuggestionCard, type OutfitSuggestion, } from '@/components/layout/mobile/VintexAITool/OutfitSuggestionCard';
  
 type ChatRole = 'user' | 'vintex';
  
