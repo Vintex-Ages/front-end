@@ -1,0 +1,205 @@
+import { useEffect, useRef, useState, type FormEvent, type SVGProps } from 'react';
+import {
+  OutfitSuggestionCard,
+  type OutfitSuggestion,
+} from '@/components/layout/VintexAITool/OutfitSuggestionCard';
+ 
+type ChatRole = 'user' | 'vintex';
+ 
+interface ChatMessage {
+  id: string;
+  role: ChatRole;
+  timestamp: string;
+  text: string;
+  outfit?: OutfitSuggestion;
+}
+ 
+const INITIAL_MESSAGES: ChatMessage[] = [
+  {
+    id: 'm1',
+    role: 'user',
+    timestamp: 'agora',
+    text: 'Quero um look para um café no domingo, com cara vintage mas sem parecer fantasia.',
+  },
+  {
+    id: 'm2',
+    role: 'vintex',
+    timestamp: 'agora',
+    text: 'Entendi: confortável, com memória de brechó e uma base fácil de usar. Montei uma primeira combinação com contraste baixo e uma textura para dar personalidade.',
+    outfit: {
+      title: 'Domingo de garimpo',
+      description: 'Uma composição leve para circular pela cidade e ainda render um achado.',
+      items: [
+        { id: 'i1', label: 'Camisa leve', icon: 'shirt' },
+        { id: 'i2', label: 'Jeans reto', icon: 'pants' },
+        { id: 'i3', label: 'Bolsa de couro', icon: 'bag' },
+      ],
+      note: 'Conteúdo sintético para visualizar a ideia. A curadoria real poderá cruzar suas preferências com peças disponíveis.',
+    },
+  },
+];
+ 
+const SUGGESTION_CHIPS = ['Look para um jantar', 'Cores mais neutras', 'Até R$ 250'];
+ 
+function BackIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} {...props}>
+      <path d="M15 5 8 12l7 7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+ 
+function PlusIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} {...props}>
+      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+    </svg>
+  );
+}
+ 
+function SendIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <g clipPath="url(#send-icon-clip)">
+        <path d="M17.4166 1.58337L8.70825 10.2917" stroke="#FFFAF2" strokeWidth={1.425} />
+        <path
+          d="M17.4166 1.58337L11.8749 17.4167L8.70825 10.2917L1.58325 7.12504L17.4166 1.58337Z"
+          stroke="#FFFAF2"
+          strokeWidth={1.425}
+        />
+      </g>
+      <defs>
+        <clipPath id="send-icon-clip">
+          <rect width="19" height="19" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+ 
+function IntroPrompt() {
+  return (
+    <div className="flex gap-3 pb-6">
+      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-vermelho-escuro text-vermelho-escuro">
+        <PlusIcon className="h-4 w-4" />
+      </span>
+      <div>
+        <p className="font-display text-body font-semibold text-tinta">
+          Vamos garimpar com intenção?
+        </p>
+        <p className="mt-1 text-body text-texto-auxiliar">
+          Me conte a ocasião, as cores que você gosta ou uma peça que já mora no seu armário.
+        </p>
+      </div>
+    </div>
+  );
+}
+ 
+function UserBubble({ message }: { message: ChatMessage }) {
+  return (
+    <div className="rounded-none bg-vermelho-escuro p-4 shadow-[6px_6px_0_0_#F2D6DC]">
+      <p className="text-label font-semibold uppercase text-branco-quente">Você</p>
+      <p className="mt-2 text-body text-branco-quente">{message.text}</p>
+      <p className="mt-2 text-label text-branco-quente/70">{message.timestamp}</p>
+    </div>
+  );
+}
+ 
+function VintexBubble({ message }: { message: ChatMessage }) {
+  return (
+    <div className="rounded-none border border-linha bg-branco-quente p-4">
+      <p className="text-label font-semibold uppercase text-vermelho-escuro">Vintex</p>
+      <p className="mt-2 text-body text-tinta">{message.text}</p>
+      {message.outfit ? <OutfitSuggestionCard suggestion={message.outfit} /> : null}
+    </div>
+  );
+}
+ 
+export default function VintexAI() {
+  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [draft, setDraft] = useState('');
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+ 
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages]);
+ 
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const text = draft.trim();
+    if (!text) return;
+ 
+    setMessages((current) => [
+      ...current,
+      { id: crypto.randomUUID(), role: 'user', timestamp: 'agora', text },
+    ]);
+    setDraft('');
+  }
+ 
+  function handleChipClick(chip: string) {
+    setDraft(chip);
+  }
+ 
+  return (
+    <div className="mx-auto flex h-screen max-w-md flex-col overflow-hidden bg-papel font-ui text-tinta">
+      <header className="flex items-center gap-4 border-b border-linha px-4 py-4">
+        <button
+          type="button"
+          aria-label="Voltar"
+          className="flex h-10 w-10 items-center justify-center rounded-none border border-linha bg-branco-quente text-tinta"
+        >
+          <BackIcon className="h-5 w-5" />
+        </button>
+        <h1 className="font-display text-body font-semibold text-tinta">Conversa com a Vintex</h1>
+      </header>
+ 
+      <div className="flex-1 overflow-y-auto px-4 pb-6 pt-6">
+        <IntroPrompt />
+        <hr className="border-linha" />
+ 
+        <div className="space-y-4 pt-6">
+          {messages.map((message) =>
+            message.role === 'user' ? (
+              <UserBubble key={message.id} message={message} />
+            ) : (
+              <VintexBubble key={message.id} message={message} />
+            ),
+          )}
+        </div>
+        <div ref={endOfMessagesRef} />
+      </div>
+ 
+      <div className="border-t border-linha bg-papel px-4 pb-4 pt-3">
+        <div className="mb-3 flex gap-2 overflow-x-auto">
+          {SUGGESTION_CHIPS.map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => handleChipClick(chip)}
+              className="flex-shrink-0 rounded-full border border-linha bg-papel px-4 py-2 text-body text-tinta"
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
+ 
+        <form onSubmit={handleSubmit} className="flex items-center gap-2">
+          <input
+            type="text"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            placeholder="Conte o que você quer vestir..."
+            className="flex-1 rounded-none border border-linha bg-branco-quente px-4 py-3 text-body text-tinta placeholder:text-texto-auxiliar focus:outline-none focus-visible:ring-2 focus-visible:ring-vermelho-escuro"
+          />
+          <button
+            type="submit"
+            aria-label="Enviar mensagem"
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-none bg-vermelho-escuro text-branco-quente"
+          >
+            <SendIcon className="h-5 w-5" />
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
