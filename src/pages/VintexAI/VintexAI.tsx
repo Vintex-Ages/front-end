@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState, type FormEvent, type SVGProps } from 'react';
-import { OutfitSuggestionCard, type OutfitSuggestion, } from '@/components/layout/mobile/VintexAITool/OutfitSuggestionCard';
- 
+import { OutfitSuggestionCard, type OutfitSuggestion} from '@/components/layout/VintexAITool/OutfitSuggestionCard';
+
+/**
+ * Tela de conversa com AI Vintex (mock visual, Figma frame do chat).
+ */
+
 type ChatRole = 'user' | 'vintex';
- 
+
 interface ChatMessage {
   id: string;
   role: ChatRole;
@@ -10,7 +14,7 @@ interface ChatMessage {
   text: string;
   outfit?: OutfitSuggestion;
 }
- 
+
 const INITIAL_MESSAGES: ChatMessage[] = [
   {
     id: 'm1',
@@ -35,9 +39,9 @@ const INITIAL_MESSAGES: ChatMessage[] = [
     },
   },
 ];
- 
+
 const SUGGESTION_CHIPS = ['Look para um jantar', 'Cores mais neutras', 'Até R$ 250'];
- 
+
 function BackIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} {...props}>
@@ -45,7 +49,7 @@ function BackIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 function PlusIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} {...props}>
@@ -53,7 +57,7 @@ function PlusIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 function SendIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -73,7 +77,7 @@ function SendIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
- 
+
 function IntroPrompt() {
   return (
     <div className="flex gap-3 pb-6">
@@ -91,17 +95,17 @@ function IntroPrompt() {
     </div>
   );
 }
- 
+
 function UserBubble({ message }: { message: ChatMessage }) {
   return (
-    <div className="rounded-none bg-vermelho-escuro p-4 shadow-[6px_6px_0_0_#F2D6DC]">
+    <div className="rounded-none bg-vermelho-escuro p-4 shadow-[6px_6px_0_0_theme(colors.vermelho-contorno)]">
       <p className="text-label font-semibold uppercase text-branco-quente">Você</p>
       <p className="mt-2 text-body text-branco-quente">{message.text}</p>
       <p className="mt-2 text-label text-branco-quente/70">{message.timestamp}</p>
     </div>
   );
 }
- 
+
 function VintexBubble({ message }: { message: ChatMessage }) {
   return (
     <div className="rounded-none border border-linha bg-branco-quente p-4">
@@ -111,35 +115,35 @@ function VintexBubble({ message }: { message: ChatMessage }) {
     </div>
   );
 }
- 
+
 export default function VintexAI() {
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [draft, setDraft] = useState('');
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
- 
+
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [messages]);
- 
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = draft.trim();
     if (!text) return;
- 
+
     setMessages((current) => [
       ...current,
       { id: crypto.randomUUID(), role: 'user', timestamp: 'agora', text },
     ]);
     setDraft('');
   }
- 
+
   function handleChipClick(chip: string) {
     setDraft(chip);
   }
- 
+
   return (
-    <div className="mx-auto flex h-screen max-w-md flex-col overflow-hidden bg-papel font-ui text-tinta">
-      <header className="flex items-center gap-4 border-b border-linha px-4 py-4">
+    <div className="mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-papel font-ui text-tinta tablet:max-w-2xl web:max-w-4xl">
+      <header className="flex items-center gap-4 border-b border-linha px-4 py-4 tablet:px-8 web:px-10">
         <button
           type="button"
           aria-label="Voltar"
@@ -149,11 +153,11 @@ export default function VintexAI() {
         </button>
         <h1 className="font-display text-body font-semibold text-tinta">Conversa com a Vintex</h1>
       </header>
- 
-      <div className="flex-1 overflow-y-auto px-4 pb-6 pt-6">
+
+      <div className="flex-1 overflow-y-auto px-4 pb-6 pt-6 tablet:px-8 web:px-10">
         <IntroPrompt />
         <hr className="border-linha" />
- 
+
         <div className="space-y-4 pt-6">
           {messages.map((message) =>
             message.role === 'user' ? (
@@ -165,8 +169,8 @@ export default function VintexAI() {
         </div>
         <div ref={endOfMessagesRef} />
       </div>
- 
-      <div className="border-t border-linha bg-papel px-4 pb-4 pt-3">
+
+      <div className="border-t border-linha bg-papel px-4 pb-4 pt-3 tablet:px-8 web:px-10">
         <div className="mb-3 flex gap-2 overflow-x-auto">
           {SUGGESTION_CHIPS.map((chip) => (
             <button
@@ -179,7 +183,7 @@ export default function VintexAI() {
             </button>
           ))}
         </div>
- 
+
         <form onSubmit={handleSubmit} className="flex items-center gap-2">
           <input
             type="text"
