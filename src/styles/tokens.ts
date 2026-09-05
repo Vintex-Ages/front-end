@@ -45,6 +45,7 @@ export const colors: Record<string, string> = {
   linha: '#CFC3B3', // borda e divisória
   'vermelho-escuro': '#7D0020', // ação e assinatura (único vermelho da v.1)
   'vermelho-suave': '#F0D9D4', // fundo de destaque
+  'vermelho-contorno': '#F2D6DC', // moldura interna e sombra decorativa sobre vermelho-escuro
   'verde-rs': '#315443', // confiança e confirmação
   dourado: '#B88C38', // atenção — nunca CTA
 };

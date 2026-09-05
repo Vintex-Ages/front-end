@@ -15,7 +15,7 @@ describe('design tokens', () => {
       'verde-rs': '#315443',
       dourado: '#B88C38',
     });
-    expect(Object.keys(colors)).toHaveLength(10);
+    expect(Object.keys(colors)).toHaveLength(11);
   });
 
   it('declares Fraunces for display and Inter for UI, each with a fallback stack', () => {
