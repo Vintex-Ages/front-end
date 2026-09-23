@@ -1,41 +1,38 @@
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
 
-/**
- * Campo de texto com label, helper e estado de erro — só apresentação.
- * Sem validação: quem chama passa `error` quando o valor for inválido.
- *
- * Usage:
- *   import InputField from '@/components/common/InputField';
- *   <InputField id="email" label="E-mail" type="email" value={email}
- *     onChange={setEmail} error={erroEmail} />
- */
-export type InputFieldProps = {
-  label: string;
+export type SelectOption = {
   value: string;
-  onChange: (v: string) => void;
-  type?: 'text' | 'email' | 'password' | 'tel';
+  label: string;
+  disabled?: boolean;
+};
+
+export type SelectProps = {
+  id: string;
+  label: string;
+  value: string | null;
+  onChange: (value: string | null) => void;
+  options: SelectOption[];
   placeholder?: string;
   helperText?: string;
-  /** Quando presente, pinta a borda e ocupa o lugar de `helperText`. */
   error?: string;
   disabled?: boolean;
-  id: string;
   labelAdornment?: ReactNode;
 };
 
-function InputField({
+/** Seleção nativa controlada, com opção vazia, ajuda e erro opcionais. */
+function Select({
+  id,
   label,
   value,
   onChange,
-  type = 'text',
+  options,
   placeholder,
   helperText,
   error,
   disabled = false,
-  id,
   labelAdornment,
-}: InputFieldProps) {
+}: SelectProps): JSX.Element {
   const hasError = Boolean(error);
   const message = error ?? helperText;
   const messageId = `${id}-message`;
@@ -49,24 +46,29 @@ function InputField({
         {labelAdornment != null ? <span>{labelAdornment}</span> : null}
       </div>
 
-      <input
+      <select
         id={id}
-        type={type}
-        value={value}
-        placeholder={placeholder}
+        value={value ?? ''}
         disabled={disabled}
         aria-invalid={hasError}
         aria-describedby={message ? messageId : undefined}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => onChange(event.target.value === '' ? null : event.target.value)}
         className={clsx(
-          'border bg-branco-quente px-4 py-3 text-body text-tinta',
-          'placeholder:text-texto-auxiliar focus:outline-none focus:ring-1',
+          'w-full rounded-none border bg-branco-quente px-4 py-3 text-body text-tinta',
+          'focus:outline-none focus:ring-1',
           hasError
             ? 'border-vermelho-escuro focus:border-vermelho-escuro focus:ring-vermelho-escuro'
             : 'border-linha focus:border-tinta focus:ring-tinta',
           disabled && 'cursor-not-allowed bg-papel-profundo text-texto-auxiliar',
         )}
-      />
+      >
+        <option value="">{placeholder ?? ''}</option>
+        {options.map((option, index) => (
+          <option key={`${option.value}-${index}`} value={option.value} disabled={option.disabled}>
+            {option.label}
+          </option>
+        ))}
+      </select>
 
       {message ? (
         <p
@@ -81,4 +83,4 @@ function InputField({
   );
 }
 
-export default InputField;
+export default Select;
