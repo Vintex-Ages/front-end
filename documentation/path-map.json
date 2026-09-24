@@ -1,0 +1,33 @@
+{
+  "$schema": "Mapa versionado caminho → página, usado por scripts/docs/generate-draft.mjs e pelo workflow documentation-draft.yml. Chaves são padrões glob relativos à raiz; a primeira que casar vence.",
+  "map": [
+    { "pattern": "src/main.tsx", "page": "arquitetura/fundacao-front-end" },
+    { "pattern": "src/App.tsx", "page": "arquitetura/fundacao-front-end" },
+    { "pattern": "src/routes/**", "page": "arquitetura/fundacao-front-end" },
+    { "pattern": "src/context/AuthContext.tsx", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/context/useAuth.ts", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/hooks/useProtectedAction.ts", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/services/httpClient.ts", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/services/authService.ts", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/types/auth.ts", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/pages/Auth/**", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/components/common/LoginInterceptor.tsx", "page": "arquitetura/autenticacao" },
+    { "pattern": "src/services/catalogService.ts", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/mocks/products.ts", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/types/catalog.ts", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/types/product.ts", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/pages/Catalog/**", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/pages/ProductDetail.tsx", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/components/catalog/**", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/components/product/**", "page": "funcionalidades/catalogo" },
+    { "pattern": "src/services/vintexAiService.ts", "page": "funcionalidades/assistente-vintex" },
+    { "pattern": "src/types/vintex-ai.ts", "page": "funcionalidades/assistente-vintex" },
+    { "pattern": "src/pages/VintexAI/**", "page": "funcionalidades/assistente-vintex" },
+    { "pattern": "src/components/vintex-ai/**", "page": "funcionalidades/assistente-vintex" },
+    { "pattern": "src/styles/**", "page": "design-system/tokens" },
+    { "pattern": "tailwind.config.ts", "page": "design-system/tokens" },
+    { "pattern": "src/pages/StyleGuide/**", "page": "design-system/tokens" },
+    { "pattern": "src/components/common/**", "page": "design-system/tokens" },
+    { "pattern": "src/components/layout/**", "page": "design-system/tokens" }
+  ]
+}
