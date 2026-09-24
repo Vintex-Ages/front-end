@@ -9,6 +9,9 @@ Repositório de front-end do projeto **Vintex**, PoC de marketplace de moda circ
 Este repositório é responsável **apenas pela camada de front-end**. Back-end, IA e
 outras responsabilidades vivem em repositórios separados.
 
+A documentação viva de arquitetura e componentes está em
+[`documentation/`](documentation/README.md).
+
 ## Stack
 
 - [React 18](https://react.dev/) + [Vite](https://vitejs.dev/) + TypeScript

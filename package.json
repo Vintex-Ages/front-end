@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
     "test": "vitest run --passWithNoTests",
+    "test:docs": "node --test scripts/docs/generate-draft.test.mjs",
     "test:coverage": "vitest run --coverage --passWithNoTests"
   },
   "dependencies": {
