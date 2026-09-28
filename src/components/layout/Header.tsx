@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import logoVintex from '@/assets/images/logo-vintex.svg';
 import { SearchBar } from '@/components/catalog/SearchBar';
 import { useAuth } from '@/context/useAuth';
 import { paths } from '@/routes/paths';
@@ -17,10 +18,10 @@ import { NAV_LINKS } from './navLinks';
  *
  * Decisões da revisão visual:
  *
- * - **A marca deixa de ser um título.** Estava em `text-h2` (48px), que num
- *   aparelho de 390px consumia a largura toda e foi o motivo de a navegação
- *   ficar escondida abaixo de `tablet`. Em `text-h3` a marca continua sendo a
- *   voz editorial (Fraunces, minúscula) e sobra espaço para o resto.
+ * - **A marca é o logo vetorial do Figma** (Home Pública, `592:1725`), não mais
+ *   um wordmark em texto. O SVG entra como `<img alt="Vintex">` na altura do
+ *   design (20px): o link de marca continua com nome acessível e sobra espaço
+ *   para a navegação e a conta.
  * - **A navegação aparece em todo tamanho de tela.** Eram dois links; abaixo
  *   de 720px eles simplesmente sumiam e o catálogo só era alcançável pelo
  *   rodapé. Dois links cabem — um menu sanfonado aqui seria complexidade sem
@@ -100,9 +101,9 @@ function Header() {
       <Container className="flex items-center gap-4 py-3 tablet:gap-6 tablet:py-4">
         <Link
           to={paths.home}
-          className="shrink-0 font-display text-h3 leading-none text-tinta hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-vermelho-escuro"
+          className="shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-vermelho-escuro"
         >
-          vintex
+          <img src={logoVintex} alt="Vintex" className="block h-5 w-auto" />
         </Link>
 
         <nav aria-label="Principal" className="flex shrink-0 items-center gap-4 tablet:gap-6">
