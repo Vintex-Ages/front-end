@@ -41,6 +41,9 @@ jobs:
       - name: Testes
         run: npm run test
 
+      - name: Testes do gerador de documentação
+        run: npm run test:docs
+
       - name: Cobertura de testes
         run: npm run test:coverage
 
